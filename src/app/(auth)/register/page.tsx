@@ -16,6 +16,9 @@ const schema = yup.object({
   nama_lengkap: yup.string().required('Nama Lengkap wajib diisi'),
   email: yup.string().email('Format email tidak valid').required('Email wajib diisi'),
   password: yup.string().min(8, 'Minimal 8 karakter').required('Password wajib diisi'),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref('password')], 'Password tidak sama')
+    .required('Konfirmasi password wajib diisi'),
 });
 
 export default function RegisterPage() {
@@ -26,7 +29,8 @@ export default function RegisterPage() {
   });
 
   const onSubmit = (data: any) => {
-    registerAction(data);
+    const { confirmPassword, ...registerData } = data;
+    registerAction(registerData);
   };
 
   return (
@@ -85,6 +89,17 @@ export default function RegisterPage() {
                  <span className="text-[10px] font-bold">At least 8 characters</span>
               </div>
               {errors.password && <span className="text-xs text-red-500 font-bold ml-1">{errors.password.message}</span>}
+            </div>
+
+            <div className="space-y-2.5">
+              <Label className="text-[10px] font-black text-neutral-500 tracking-[0.15em] uppercase ml-1">Confirm Password</Label>
+              <Input 
+                type="password"
+                {...register('confirmPassword')} 
+                placeholder="••••••••" 
+                className="h-14 border-0 bg-neutral-100/60 focus-visible:ring-neutral-300 text-sm rounded-2xl px-5 tracking-[0.3em] font-medium"
+              />
+              {errors.confirmPassword && <span className="text-xs text-red-500 font-bold ml-1">{errors.confirmPassword.message as string}</span>}
             </div>
 
             <div className="pt-4">

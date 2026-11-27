@@ -40,8 +40,10 @@ export const useAuth = () => {
     try {
       const res = await axiosInstance.post('/auth/verify-email', { email });
       toast.success(res.data.message || 'Verification code resent successfully.');
+      return true;
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to resend code.');
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -52,8 +54,10 @@ export const useAuth = () => {
     try {
       const res = await axiosInstance.post('/auth/forgot-password', data);
       toast.success(res.data.message || 'Reset link has been sent to your Zoho mail!');
+      return true;
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Request failed');
+      return false;
     } finally {
       setIsLoading(false);
     }

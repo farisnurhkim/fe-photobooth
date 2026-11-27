@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -18,13 +19,26 @@ const schema = yup.object({
 
 export default function ForgotPasswordPage() {
   const { forgotPassword, isLoading } = useAuth();
+  const [resendTimer, setResendTimer] = useState(0);
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
-    forgotPassword(data);
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [resendTimer]);
+
+  const onSubmit = async (data: any) => {
+    const success = await forgotPassword(data);
+    if (success) {
+      setResendTimer(60);
+    }
   };
 
   return (
@@ -65,11 +79,13 @@ export default function ForgotPasswordPage() {
             <div className="pt-4">
                <Button 
                  type="submit" 
-                 disabled={isLoading}
+                 disabled={isLoading || resendTimer > 0}
                  className="w-full h-15 bg-neutral-800 hover:bg-black text-white font-bold tracking-widest text-xs uppercase rounded-2xl transition-all shadow-xl active:scale-95 disabled:opacity-70 py-7"
               >
                 {isLoading ? (
                     <><Loader2 className="mr-3 h-5 w-5 animate-spin" /> SENDING LINK...</>
+                ) : resendTimer > 0 ? (
+                    `RESEND IN ${resendTimer}S`
                 ) : 'SEND RESET LINK'}
               </Button>
             </div>

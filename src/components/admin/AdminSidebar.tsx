@@ -13,7 +13,6 @@ import {
   BarChart2,
   CalendarDays,
   ScanQrCode,
-  Settings,
   LogOut,
   User,
   MoreVertical,
@@ -32,7 +31,6 @@ const navItems = [
   { href: '/admin/packages', label: 'Packages', icon: Package },
   { href: '/admin/schedules', label: 'Schedules', icon: Clock },
   { href: '/admin/scanner', label: 'Scanner', icon: ScanQrCode },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function AdminSidebar({ className }: { className?: string }) {
@@ -100,7 +98,6 @@ export default function AdminSidebar({ className }: { className?: string }) {
                       : user.name
                     : 'Admin'}
                 </span>
-                <span className="text-[0.62rem] text-muted-foreground">View Profile</span>
               </div>
             </div>
 
@@ -119,21 +116,6 @@ export default function AdminSidebar({ className }: { className?: string }) {
               align="end"
               className="w-48 p-1 rounded-xl shadow-lg border border-border animate-in fade-in-0 zoom-in-95 duration-150"
             >
-              <Link
-                href="/profile"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-[0.8rem] text-foreground no-underline hover:bg-muted transition-colors w-full"
-              >
-                <User size={13} />
-                <span>View Profile</span>
-              </Link>
-              <Link
-                href="/admin/settings"
-                className="flex items-center gap-2 px-3 py-2 rounded-lg text-[0.8rem] text-foreground no-underline hover:bg-muted transition-colors w-full"
-              >
-                <Settings size={13} />
-                <span>Settings</span>
-              </Link>
-              <Separator className="my-1" />
               <button
                 className="flex items-center gap-2 px-3 py-2 rounded-lg text-[0.8rem] text-red-500 hover:bg-red-50 transition-colors w-full cursor-pointer border-none bg-transparent text-left"
                 onClick={() => signOut({ callbackUrl: '/login' })}

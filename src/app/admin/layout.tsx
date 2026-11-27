@@ -16,6 +16,10 @@ import { cn } from '@/lib/utils';
 export const metadata = {
   title: 'SnapBook Admin',
   description: 'Admin dashboard for SnapBook photobooth booking system',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function AdminLayout({

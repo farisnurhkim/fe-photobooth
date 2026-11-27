@@ -114,7 +114,7 @@ export default function PackageTable({ packages, onEdit, onDelete }: PackageTabl
                 </TableCell>
                 <TableCell className="py-4">
                   <span className="text-[1rem] font-bold text-[#b8860b]">
-                    ${pkg.harga.toFixed(2)}
+                    {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(pkg.harga).replace('IDR', 'Rp')}
                   </span>
                 </TableCell>
                 <TableCell className="py-4">

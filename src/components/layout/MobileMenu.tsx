@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Menu, LogOut, Home, Package, Sparkles, Calendar, User } from "lucide-react";
+import { Menu, LogOut, Home, Package, Sparkles, Calendar, User, Settings } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 import {
@@ -157,7 +157,15 @@ export function MobileMenu({ user, isLoggedIn }: MobileMenuProps) {
         <div className="p-3 border-t border-neutral-100">
           {isLoggedIn ? (
             <>
-              <Separator className="mb-3" />
+              <Link
+                href="/settings"
+                onClick={() => setOpen(false)}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 transition-colors cursor-pointer"
+              >
+                <Settings size={16} />
+                Manage Account
+              </Link>
+              <Separator className="my-3" />
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"

@@ -1,9 +1,10 @@
 import type { BookingItem } from '@/lib/adminApi';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface Props {
-  bookings: BookingItem[];
+  bookings?: BookingItem[];
 }
 
 function formatDate(dateStr: string) {
@@ -17,11 +18,11 @@ function formatDate(dateStr: string) {
 
 function getSlotInfo(booking: BookingItem) {
   const slots = booking.schedule_date_id?.slots ?? [];
-  const slot = slots.find((s) => s._id === booking.schedule_slot_id);
+  const slot = slots.find((s) => s._id === booking.schedule_slot_ids?.[0]);
   return slot?.start_time ?? 'N/A';
 }
 
-export default function NextSessions({ bookings }: Props) {
+export default function NextSessions({ bookings = [] }: Props) {
   const upcoming = bookings
     .filter((b) => b.status_booking === 'confirmed' || b.status_booking === 'pending')
     .slice(0, 3);
@@ -61,12 +62,14 @@ export default function NextSessions({ bookings }: Props) {
           })
         )}
 
-        <Button
-          variant="outline"
-          className="w-full mt-1 text-[0.78rem] h-9 border-dashed rounded-xl text-muted-foreground hover:text-indigo-600 hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
-        >
-          View Full Schedule
-        </Button>
+        <Link href="/admin/schedules" className="block w-full mt-1">
+          <Button
+            variant="outline"
+            className="w-full text-[0.78rem] h-9 border-dashed rounded-xl text-muted-foreground hover:text-indigo-600 hover:border-indigo-400 hover:bg-indigo-50 transition-colors"
+          >
+            View Full Schedule
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

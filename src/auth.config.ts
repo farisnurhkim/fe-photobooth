@@ -1,6 +1,10 @@
 import type { NextAuthConfig } from 'next-auth';
 
 export const authConfig = {
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60, // 24 hours
+  },
   pages: {
     signIn: '/login',
   },
@@ -12,7 +16,7 @@ export const authConfig = {
                         nextUrl.pathname.startsWith('/forgot-password') || 
                         nextUrl.pathname.startsWith('/reset-password');
       const isProtectedPage = nextUrl.pathname.startsWith('/dashboard') || 
-                             nextUrl.pathname.startsWith('/bookings/my-bookings') ||
+                             nextUrl.pathname.startsWith('/my-bookings') ||
                              nextUrl.pathname.startsWith('/admin');
 
       if (isProtectedPage) {
@@ -27,6 +31,11 @@ export const authConfig = {
       return true;
     },
     async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session?.user) {
+        if (session.user.name) token.name = session.user.name;
+        if (session.user.email) token.email = session.user.email;
+      }
+      
       if (user) {
         token.id = (user as any).id;
         token.accessToken = (user as any).accessToken;

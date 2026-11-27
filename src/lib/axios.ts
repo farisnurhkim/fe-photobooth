@@ -36,7 +36,9 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     if (error.response && error.response.status === 401) {
-      if (typeof window !== 'undefined') {
+      // Ignore 401s from the login endpoint itself so it doesn't cause infinite refreshes
+      const isLoginRequest = error.config?.url?.includes('/auth/login');
+      if (typeof window !== 'undefined' && !isLoginRequest) {
         // Sign out on 401
         await signOut({ redirect: true, callbackUrl: '/login' });
       }

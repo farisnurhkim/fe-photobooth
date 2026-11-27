@@ -7,14 +7,13 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { NavItems, UserMenu } from "./NavComponents";
-import { NotificationBell } from "./NotificationBell";
 import { MobileMenu } from "./MobileMenu";
 import type { NavUser } from "./NavComponents";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Features", href: "/#features" },
-  { label: "Packages", href: "/#packages" },
+  { label: "Packages", href: "/packages" },
 ];
 
 export default function Navbar() {
@@ -22,14 +21,16 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const visibleLinks = isLoggedIn
+  const visibleLinks = (mounted && isLoggedIn)
     ? [...NAV_LINKS, { label: "My Bookings", href: "/my-bookings" }]
     : NAV_LINKS;
 
@@ -73,11 +74,8 @@ export default function Navbar() {
 
           {/* ── Right Section ── */}
           <div className="flex items-center gap-2">
-            {/* Notification Bell */}
-            <NotificationBell />
-
             {/* Auth Actions */}
-            {isLoggedIn && user ? (
+            {(mounted && isLoggedIn && user) ? (
               <UserMenu user={user} />
             ) : (
               <div className="hidden md:flex items-center gap-2">
@@ -99,7 +97,7 @@ export default function Navbar() {
             )}
 
             {/* Mobile Hamburger */}
-            <MobileMenu user={user} isLoggedIn={isLoggedIn} />
+            <MobileMenu user={user} isLoggedIn={mounted ? isLoggedIn : false} />
           </div>
         </div>
       </div>

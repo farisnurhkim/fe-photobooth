@@ -43,9 +43,9 @@ function formatDateTime(dateStr: string, slotStart?: string) {
 }
 
 function getSlotTime(booking: BookingItem): string {
-  const slots = booking.schedule_date_id?.slots ?? [];
-  const slot = slots.find((s) => s._id === booking.schedule_slot_id);
-  return slot?.start_time ?? '';
+  const slots = booking.schedule_date_id?.slots || [];
+  const slot = slots.find((s) => s._id === booking.schedule_slot_ids?.[0]);
+  return slot ? `${slot.start_time}` : 'TBD';
 }
 
 function StatusBadge({ status }: { status: string }) {

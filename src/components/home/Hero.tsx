@@ -1,5 +1,7 @@
 "use client";
 
+import Image from 'next/image';
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -78,10 +80,13 @@ export default function Hero() {
         className="flex-1 relative w-full"
       >
         <div className="relative rounded-[40px] overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.1)] border-8 border-white group">
-          <img 
+          <Image 
             src="/booth.png" 
             alt="Photography Studio" 
-            className="w-full aspect-[4/5] object-cover"
+            width={800}
+            height={1000}
+            priority
+            className="w-full h-full aspect-4/5 object-cover"
           />
           
           {/* Quote Overlay Card */}

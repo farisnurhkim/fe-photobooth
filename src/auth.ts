@@ -25,11 +25,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               email: data.user.email,
               accessToken: data.token,
               role: data.user.role,
+              profilePicture: data.user.profilePicture || null,
             };
           }
         } catch (error: any) {
           const errorMessage = error.response?.data?.message || error.message || 'Incorrect email or password';
-          // Throwing a specialized error might be better, but for now we try to pass the message
           throw new Error(errorMessage);
         }
 

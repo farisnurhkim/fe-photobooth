@@ -61,6 +61,8 @@ function PackageCard({
   ];
   const accent = accents[index % accents.length];
 
+  
+
   return (
     <motion.div
       layout
@@ -149,7 +151,7 @@ function PackageCard({
 
         {/* CTA */}
         <div className="mt-auto pt-2">
-          <Link href={isLogged ? `/bookings/create?package=${pkg.slug}` : "/login"}>
+          <Link href={`/packages?packageId=${pkg._id}&type=${pkg.type}`}>
             <Button
               variant={accent.button}
               className={cn(
@@ -159,7 +161,7 @@ function PackageCard({
                   : "border-neutral-200 hover:bg-neutral-50 text-neutral-800"
               )}
             >
-              Pilih Paket
+              Select Package
             </Button>
           </Link>
         </div>
@@ -271,7 +273,7 @@ export default function PackagePreview() {
           ) : error ? (
             <div className="flex flex-col items-center justify-center h-64 gap-3">
               <p className="text-neutral-400 font-medium">
-                Gagal memuat paket. Coba lagi.
+                Failed to load packages. Please try again.
               </p>
               <Button
                 variant="outline"
@@ -284,11 +286,11 @@ export default function PackagePreview() {
           ) : packages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-64 gap-2">
               <p className="text-neutral-400 font-medium">
-                Belum ada paket {activeFilter} tersedia.
+                No {activeFilter} packages available yet.
               </p>
             </div>
           ) : (
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               <motion.div
                 key={`${activeFilter}-${currentPage}`}
                 initial={{ opacity: 0 }}
@@ -314,12 +316,12 @@ export default function PackagePreview() {
         {totalPages > 1 && !loading && !error && (
           <div className="flex items-center justify-between mt-12 pt-8 border-t border-neutral-200">
             <p className="text-sm text-neutral-400">
-              Menampilkan{" "}
+              Showing{" "}
               <span className="font-semibold text-neutral-700">
                 {(currentPage - 1) * LIMIT + 1}–
                 {Math.min(currentPage * LIMIT, totalData)}
               </span>{" "}
-              dari <span className="font-semibold text-neutral-700">{totalData}</span> paket
+              of <span className="font-semibold text-neutral-700">{totalData}</span> packages
             </p>
 
             <div className="flex items-center gap-2">

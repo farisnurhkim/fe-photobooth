@@ -354,7 +354,7 @@ export default function PackageModal({ isOpen, onClose, onSubmit, initialData }:
                 </div>
                 <div className="space-y-2">
                   <Label className="text-[0.7rem] font-black text-neutral-400 tracking-widest uppercase">
-                    Price ($)
+                    Price (IDR)
                   </Label>
                   <Input
                     type="number"
